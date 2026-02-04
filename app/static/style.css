@@ -1,0 +1,206 @@
+/**
+Desafio Técnico - Analista de Bioinformática **/
+
+:root {
+    --deep-purple: #1a0b2e;
+    --mid-purple: #2d1454;
+    --light-purple: #9d50bb;
+    --text-pure-white: #ffffff;
+    --border-purple: #4b2c85;
+    --danger-red: #ff4d4d;
+    --warning-gold: #f1c40f;
+}
+
+/* 1. Base e Layout */
+body {
+    background-color: var(--deep-purple);
+    color: var(--text-pure-white);
+    min-height: 100vh;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+/* 2. Navbar e Search Wrapper */
+.navbar {
+    background-color: var(--deep-purple);
+    border-bottom: 1px solid var(--border-purple);
+}
+
+.search-container {
+    position: relative;
+}
+
+.search-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.form-control-genvar {
+    background-color: var(--mid-purple) !important;
+    border: 2px solid var(--border-purple) !important;
+    color: var(--text-pure-white) !important;
+    padding-left: 45px;
+    padding-right: 45px; /* Espaço para o X */
+    height: 50px;
+    border-radius: 8px;
+}
+
+.lupa {
+    position: absolute;
+    left: 15px;
+    color: var(--light-purple);
+    z-index: 5;
+}
+
+/* O BOTÃO X DA BUSCA */
+.btn-clear-x {
+    position: absolute;
+    right: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    border: none;
+    color: white;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    display: none; /* Controlado pelo JS */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s;
+    z-index: 10;
+}
+
+.btn-clear-x:hover {
+    background: var(--light-purple);
+}
+
+/* 3. Histórico e seu X */
+.history-dropdown {
+    position: absolute;
+    top: 55px;
+    width: 100%;
+    background: var(--mid-purple);
+    border: 1px solid var(--border-purple);
+    border-radius: 8px;
+    z-index: 1000;
+    display: none;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    overflow: hidden;
+}
+
+.history-item {
+    transition: background 0.2s;
+}
+
+.history-item:hover {
+    background-color: rgba(157, 80, 187, 0.15);
+}
+
+.btn-remove-history-item {
+    background: none;
+    border: none;
+    color: rgba(255,255,255,0.3);
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 1.1rem;
+}
+
+.btn-remove-history-item:hover {
+    color: var(--danger-red);
+}
+
+/* 4. Card e Tabela (Layout 50%) */
+#variant-info-container {
+    /* O HTML já usa col-md-6, aqui garantimos o respiro */
+    padding-right: 20px; 
+}
+
+.card {
+    background: var(--mid-purple) !important;
+    border: 1px solid var(--border-purple) !important;
+}
+
+.table-dark {
+    background-color: transparent !important;
+}
+
+.table-dark thead th {
+    color: var(--light-purple);
+    border-bottom: 2px solid var(--border-purple) !important;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    padding: 15px 10px;
+}
+
+.table-dark td {
+    padding: 15px 10px;
+    border-bottom: 1px solid rgba(75, 44, 133, 0.3);
+    vertical-align: middle;
+}
+
+/* 5. Botões de Download (JSON, TSV, CSV) */
+.btn-export {
+    background: transparent;
+    border: 1px solid var(--border-purple);
+    color: rgba(255,255,255,0.8);
+    border-radius: 4px;
+    font-size: 0.7rem;
+    padding: 4px 10px;
+    margin-left: 6px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: all 0.2s;
+}
+
+.btn-export:hover {
+    border-color: var(--light-purple);
+    background: var(--light-purple);
+    color: white;
+}
+
+/* 6. Selectize Customizado */
+.selectize-input {
+    background: var(--deep-purple) !important;
+    border: 1px solid var(--border-purple) !important;
+    color: white !important;
+    border-radius: 6px !important;
+    padding: 10px !important;
+}
+
+.selectize-dropdown {
+    background: var(--mid-purple) !important;
+    color: white !important;
+    border: 1px solid var(--border-purple) !important;
+}
+
+.selectize-dropdown .active {
+    background: var(--light-purple) !important;
+}
+
+/* 7. Animações */
+.animate-fade-up {
+    animation: fadeUp 0.4s ease-out forwards;
+}
+
+@keyframes fadeUp {
+    from { opacity: 0; transform: translateY(15px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+.btn-genvar {
+    background-color: var(--light-purple);
+    border: none;
+    color: white;
+    padding: 0 30px;
+    height: 50px;
+    border-radius: 8px;
+    font-weight: 700;
+    transition: opacity 0.2s;
+}
+
+.btn-genvar:hover {
+    opacity: 0.9;
+}

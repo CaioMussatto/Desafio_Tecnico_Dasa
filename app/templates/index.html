@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="row">
+    <div id="variant-info-container" class="col-md-6 animate-fade-up">
+        
+        <div class="card shadow-lg border-0" style="background: var(--mid-purple); border-radius: 12px;">
+            <div class="card-header d-flex justify-content-between align-items-center bg-transparent border-bottom border-purple p-3">
+                <h5 class="mb-0 text-white fw-bold">Resultados da Variante</h5>
+                <div id="export-buttons-container"></div>
+            </div>
+            
+            <div class="card-body p-4">
+                <div class="mb-4">
+                    <label class="text-white-50 small fw-bold text-uppercase mb-2">Banco de Dados / População</label>
+                    <select id="pop-select" placeholder="Digite para buscar banco..."></select>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="variantTable" class="table table-dark table-hover w-100 mb-0">
+                        <thead>
+                            <tr>
+                                <th>rsID</th>
+                                <th>Chr</th>
+                                <th>Pos</th>
+                                <th>Alleles</th>
+                                <th>MAF</th>
+                                <th>Genes</th>
+                                <th>Consequence</th>
+                            </tr>
+                        </thead>
+                        <tbody id="table-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div id="status-area" class="mt-3"></div>
+    </div>
+
+    <div class="col-md-6"></div>
+</div>
+{% endblock %}
