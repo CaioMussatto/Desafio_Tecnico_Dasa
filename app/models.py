@@ -19,7 +19,8 @@ class VariantData(BaseModel):
     chromosome: str = Field(..., description="Cromossomo (Mapeamento GRCh38)")
     position: int = Field(..., description="Posição genômica inicial")
     alleles: str = Field(..., description="String de alelos de referência/alternativos")
-    minor_allele_freq: str = Field("N/A", description="Highest MAF observado (Formato 'Alelo: Valor')")
+    minor_allele_freq: str = Field("N/A", description="Highest MAF observado com Fonte")
+    maf_1000g: str = Field("N/A", description="Frequência global do 1000 Genomes Phase 3") # Campo Novo
     pop_frequencies: List[PopulationFrequency] = Field(default_factory=list)
     genes: List[str] = Field(default_factory=list, description="Lista de símbolos oficiais de genes associados")
     consequence: str = Field(..., description="Consequência funcional predita mais severa")

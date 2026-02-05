@@ -2,43 +2,49 @@
 
 {% block content %}
 <div class="row">
-    <div id="variant-info-container" class="col-md-6 animate-fade-up">
-        
-        <div class="card shadow-lg border-0" style="background: var(--mid-purple); border-radius: 12px;">
+    <div class="col-md-3 animate-fade-up">
+        <div class="card shadow-lg border-0 h-100" style="background: var(--mid-purple); border-radius: 12px;">
+            <div class="card-header bg-transparent border-bottom border-purple p-3">
+                <h5 class="mb-0 text-white fw-bold"><i class="bi bi-code-slash me-2"></i>Raw Data</h5>
+            </div>
+            <div class="card-body p-0">
+                <pre id="json-viewer" class="text-white p-3 mb-0" style="font-size: 0.8rem; max-height: 550px; overflow-y: auto; background: rgba(0,0,0,0.2);"></pre>
+            </div>
+        </div>
+    </div>
+
+    <div id="variant-info-container" class="col-md-9 animate-fade-up">
+        <div class="card shadow-lg border-0 h-100" style="background: var(--mid-purple); border-radius: 12px;">
             <div class="card-header d-flex justify-content-between align-items-center bg-transparent border-bottom border-purple p-3">
-                <h5 class="mb-0 text-white fw-bold">Resultados da Variante</h5>
+                <h5 class="mb-0 text-white fw-bold">Variant Analysis Results</h5>
                 <div id="export-buttons-container"></div>
             </div>
             
             <div class="card-body p-4">
                 <div class="mb-4">
-                    <label class="text-white-50 small fw-bold text-uppercase mb-2">Banco de Dados / População</label>
-                    <select id="pop-select" placeholder="Digite para buscar banco..."></select>
+                    <label class="text-white-50 small fw-bold text-uppercase mb-2">Database / Population Selection</label>
+                    <select id="pop-select" placeholder="Start typing to search database..."></select>
                 </div>
 
                 <div class="table-responsive">
                     <table id="variantTable" class="table table-dark table-hover w-100 mb-0">
                         <thead>
                             <tr>
-                                <th>rsID</th>
-                                <th>Chr</th>
-                                <th>Pos</th>
-                                <th>Alleles</th>
-                                <th>MAF</th>
-                                <th>Genes</th>
-                                <th>Consequence</th>
+                                <th class="text-center">rsID</th>
+                                <th class="text-end">Chromosome</th> <th class="text-center">Position</th>
+                                <th class="text-center">Alleles</th>
+                                <th class="text-center">1000 Genomes Phase 3 MAF</th> <th class="text-center">Highest MAF (Source)</th>
+                                <th class="text-center">Genes</th>
+                                <th class="text-center">Consequence</th>
                             </tr>
                         </thead>
                         <tbody id="table-body">
                             </tbody>
                     </table>
                 </div>
+                <div id="status-area" class="mt-3"></div>
             </div>
         </div>
-
-        <div id="status-area" class="mt-3"></div>
     </div>
-
-    <div class="col-md-6"></div>
 </div>
 {% endblock %}

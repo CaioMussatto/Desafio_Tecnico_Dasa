@@ -48,8 +48,14 @@ class EnsemblClient:
                 pop_groups[name].append(p)
 
             all_pop_data = []
+            
+            # Variáveis para o Highest MAF
             highest_maf_val = 0.0
             highest_allele = ""
+            highest_source = "" # Rastreia a origem do maior valor
+
+            # Variável para o 1000 Genomes Phase 3 (Novo Requisito)
+            maf_1000g_str = "N/A"
 
             for name, entries in pop_groups.items():
                 if len(entries) >= 2:
@@ -59,6 +65,10 @@ class EnsemblClient:
                     minor_data = sorted_alleles[1]
                     current_maf = float(minor_data.get('frequency', 0))
                     current_allele = minor_data.get('allele', '')
+
+                    # Verifica se é especificamente o 1000 Genomes Phase 3
+                    if name == "1000GENOMES:phase_3:ALL":
+                        maf_1000g_str = f"{current_allele}: {current_maf:.2f}"
 
                     # Armazenamento para a tabela dinâmica do frontend
                     all_pop_data.append(
@@ -73,6 +83,7 @@ class EnsemblClient:
                     if current_maf > highest_maf_val:
                         highest_maf_val = current_maf
                         highest_allele = current_allele
+                        highest_source = name # Salva o nome da população
 
             # --- Extração de Mapeamento GRCh38 ---
             mapping = data.get("mappings", [{}])[0]
@@ -86,12 +97,18 @@ class EnsemblClient:
 
             logger.info(f"Sucesso: {rsid} mapeado no Chr {mapping.get('seq_region_name')} (GRCh38)")
 
+            # Formata o Highest MAF para incluir a FONTE 
+            formatted_highest = "0.00"
+            if highest_allele:
+                formatted_highest = f"{highest_allele}: {highest_maf_val:.2f} ({highest_source})"
+
             return VariantData(
                 rsid=data.get("name"),
                 chromosome=str(mapping.get("seq_region_name", "N/A")),
                 position=int(mapping.get("start", 0)),
                 alleles=mapping.get("allele_string", "N/A"),
-                minor_allele_freq=f"{highest_allele}: {highest_maf_val:.2f}" if highest_allele else "0.00",
+                minor_allele_freq=formatted_highest, # Contém Valor + Fonte
+                maf_1000g=maf_1000g_str,             # Contém Valor 1000G Phase 3
                 pop_frequencies=all_pop_data,
                 genes=sorted(list(gene_set)),
                 consequence=data.get("most_severe_consequence", "N/A").replace("_", " ")

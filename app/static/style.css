@@ -141,6 +141,27 @@ body {
     vertical-align: middle;
 }
 
+/* Garante que o conteúdo das células siga o alinhamento do header */
+#variantTable td {
+    vertical-align: middle;
+}
+
+#variantTable td:nth-child(2) { /* Coluna Chromosome */
+    text-align: right;
+    padding-right: 20px;
+}
+
+#variantTable td:not(:nth-child(2)) { /* Todas as outras */
+    text-align: center;
+}
+
+/* Ajuste no pre do JSON para não quebrar layout */
+#json-viewer {
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    border-radius: 0 0 12px 12px;
+}
+
 /* 5. Botões de Download (JSON, TSV, CSV) */
 .btn-export {
     background: transparent;

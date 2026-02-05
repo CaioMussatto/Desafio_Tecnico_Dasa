@@ -98,6 +98,7 @@ async function buscarVariante() {
 /** Tabela, Selectize e Download Dinâmico */
 function renderHorizontalTable(data) {
     const tbody = document.getElementById('table-body');
+    const jsonViewer = document.getElementById('json-viewer');
     const $select = $('#pop-select');
     let currentFilteredMAF = data.minor_allele_freq;
 
@@ -111,68 +112,92 @@ function renderHorizontalTable(data) {
         labelField: 'text',
         valueField: 'value',
         searchField: ['text'],
-        placeholder: "Buscar banco...",
+        placeholder: "Search population database...",
         items: ['GLOBAL'],
         onChange: function(value) {
-            updateTableRow(value);
+            updateView(value);
         }
     })[0].selectize;
 
-    const updateTableRow = (popValue) => {
+    /** Atualiza a Tabela e o Visualizador JSON simultaneamente */
+    const updateView = (popValue) => {
         currentFilteredMAF = data.minor_allele_freq;
+        let selectedPopData = data.minor_allele_freq; 
+
         if (popValue !== "GLOBAL") {
             const found = data.pop_frequencies.find(p => p.population === popValue);
-            if (found) currentFilteredMAF = `${found.allele}: ${found.frequency.toFixed(4)}`;
+            if (found) {
+                // Arredondando para 2 casas como solicitado
+                currentFilteredMAF = `${found.allele}: ${found.frequency.toFixed(2)}`;
+                selectedPopData = currentFilteredMAF;
+            }
         }
 
+        // 1. Atualiza Tabela com alinhamentos específicos (Chr na direita, outros centralizados)
         tbody.innerHTML = `
             <tr class="animate-fade-up">
-                <td>${data.rsid}</td>
-                <td>${data.chromosome}</td>
-                <td>${data.position}</td>
-                <td><span class="badge bg-dark border border-secondary">${data.alleles}</span></td>
-                <td class="text-warning fw-bold">${currentFilteredMAF}</td>
-                <td><small>${data.genes.join(', ') || 'N/A'}</small></td>
-                <td><span class="badge" style="background:var(--light-purple)">${data.consequence}</span></td>
+                <td class="text-center">${data.rsid}</td>
+                <td class="text-end">${data.chromosome}</td>
+                <td class="text-center">${data.position}</td>
+                <td class="text-center"><span class="badge bg-dark border border-secondary">${data.alleles}</span></td>
+                <td class="text-center text-info">${data.maf_1000g}</td>
+                <td class="text-center text-warning fw-bold">${currentFilteredMAF}</td>
+                <td class="text-center"><small>${data.genes.join(', ') || 'N/A'}</small></td>
+                <td class="text-center"><span class="badge" style="background:var(--light-purple)">${data.consequence}</span></td>
             </tr>
         `;
+
+        // 2. Atualiza Visualizador JSON com a ordem e nomes de chaves solicitados
+        const visibleJson = {
+            "rsid": data.rsid,
+            "chromosome": data.chromosome,
+            "position": data.position,
+            "alleles": data.alleles,
+            "minor_allele_freq": data.maf_1000g,
+            "highest_minor_allele_freq_MAF": selectedPopData,
+            "genes": data.genes,
+            "consequence": data.consequence
+        };
+        jsonViewer.textContent = JSON.stringify(visibleJson, null, 2);
     };
 
-    // Configura botões de download para baixar o que está VISÍVEL
+    // Configura botões de download para baixar apenas o filtrado
     const exportContainer = document.getElementById('export-buttons-container');
-    exportContainer.innerHTML = ''; // Limpa botões antigos
+    exportContainer.innerHTML = ''; 
 
     const btnClasses = "btn-export";
     
-    // Botão JSON (Visível)
+    // JSON Filtered
     const btnJson = document.createElement('button');
     btnJson.className = btnClasses;
     btnJson.innerText = 'JSON';
     btnJson.onclick = () => {
-        const visibleData = { ...data, minor_allele_freq: currentFilteredMAF };
-        downloadFile(JSON.stringify(visibleData, null, 2), `${data.rsid}.json`, 'application/json');
+        const content = jsonViewer.textContent;
+        downloadFile(content, `${data.rsid}.json`, 'application/json');
     };
 
-    // Botão TSV (Visível)
+    // TSV Filtered
     const btnTsv = document.createElement('button');
     btnTsv.className = btnClasses;
     btnTsv.innerText = 'TSV';
     btnTsv.onclick = () => {
-        const content = `rsid\tchr\tpos\talleles\tmaf\tgenes\tconsequence\n${data.rsid}\t${data.chromosome}\t${data.position}\t${data.alleles}\t${currentFilteredMAF}\t${data.genes.join(',')}\t${data.consequence}`;
-        downloadFile(content, `${data.rsid}.tsv`, 'text/tab-separated-values');
+        const header = "rsid\tchromosome\tposition\talleles\t1000g_maf\thighest_maf_source\tgenes\tconsequence\n";
+        const content = `${data.rsid}\t${data.chromosome}\t${data.position}\t${data.alleles}\t${data.maf_1000g}\t${currentFilteredMAF}\t${data.genes.join(',')}\t${data.consequence}`;
+        downloadFile(header + content, `${data.rsid}.tsv`, 'text/tab-separated-values');
     };
 
-    // Botão CSV (Visível)
+    // CSV Filtered
     const btnCsv = document.createElement('button');
     btnCsv.className = btnClasses;
     btnCsv.innerText = 'CSV';
     btnCsv.onclick = () => {
-        const content = `rsid,chr,pos,alleles,maf,genes,consequence\n${data.rsid},${data.chromosome},${data.position},${data.alleles},"${currentFilteredMAF}","${data.genes.join(',')}",${data.consequence}`;
-        downloadFile(content, `${data.rsid}.csv`, 'text/csv');
+        const header = "rsid,chromosome,position,alleles,1000g_maf,highest_maf_source,genes,consequence\n";
+        const content = `${data.rsid},${data.chromosome},${data.position},${data.alleles},"${data.maf_1000g}","${currentFilteredMAF}","${data.genes.join(',')}",${data.consequence}`;
+        downloadFile(header + content, `${data.rsid}.csv`, 'text/csv');
     };
 
     exportContainer.append(btnJson, btnTsv, btnCsv);
-    updateTableRow('GLOBAL');
+    updateView('GLOBAL');
 }
 
 function downloadFile(content, filename, contentType) {
