@@ -14,26 +14,33 @@
     </div>
 
     <div id="variant-info-container" class="col-md-9 animate-fade-up">
-        <div class="card shadow-lg border-0 h-100" style="background: var(--mid-purple); border-radius: 12px;">
+        
+        <div class="sticky-selection-bar mb-3">
+            <div class="card shadow-lg border-0" style="background: var(--mid-purple); border-radius: 12px; border: 1px solid var(--border-purple) !important;">
+                <div class="card-body p-3">
+                    <label class="text-white-50 small fw-bold text-uppercase mb-2">Seleção de População</label>
+                    <select id="pop-select" placeholder="Start typing to search database..."></select>
+                </div>
+            </div>
+        </div>
+
+        <div class="card shadow-lg border-0" style="background: var(--mid-purple); border-radius: 12px;">
             <div class="card-header d-flex justify-content-between align-items-center bg-transparent border-bottom border-purple p-3">
-                <h5 class="mb-0 text-white fw-bold">Variant Analysis Results</h5>
+                <h5 class="mb-0 text-white fw-bold">Resultados da análise de variantes</h5>
                 <div id="export-buttons-container"></div>
             </div>
             
             <div class="card-body p-4">
-                <div class="mb-4">
-                    <label class="text-white-50 small fw-bold text-uppercase mb-2">Database / Population Selection</label>
-                    <select id="pop-select" placeholder="Start typing to search database..."></select>
-                </div>
-
                 <div class="table-responsive">
                     <table id="variantTable" class="table table-dark table-hover w-100 mb-0">
                         <thead>
                             <tr>
                                 <th class="text-center">rsID</th>
-                                <th class="text-end">Chromosome</th> <th class="text-center">Position</th>
+                                <th class="text-end">Chromosome</th> 
+                                <th class="text-center">Position</th>
                                 <th class="text-center">Alleles</th>
-                                <th class="text-center">1000 Genomes Phase 3 MAF</th> <th class="text-center">Highest MAF (Source)</th>
+                                <th class="text-center">1000 Genomes Phase 3 MAF</th> 
+                                <th class="text-center">Highest MAF (Source)</th>
                                 <th class="text-center">Genes</th>
                                 <th class="text-center">Consequence</th>
                             </tr>
@@ -43,6 +50,30 @@
                     </table>
                 </div>
                 <div id="status-area" class="mt-3"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-4 mb-4">
+    <div class="col-md-3 animate-fade-up">
+        <div class="card shadow-lg border-0 h-100" style="background: var(--mid-purple); border-radius: 12px;">
+            <div class="card-header bg-transparent border-bottom border-purple p-3">
+                <h6 class="mb-0 text-white fw-bold text-uppercase" style="font-size: 0.75rem;">Visão do Cromossomo</h6>
+            </div>
+            <div class="card-body p-2 d-flex align-items-center justify-content-center" style="min-height: 450px; background: rgba(0,0,0,0.1);">
+                <div id="ideogram-container" class="w-100"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9 animate-fade-up">
+        <div class="card shadow-lg border-0 h-100" style="background: var(--mid-purple); border-radius: 12px;">
+            <div class="card-header bg-transparent border-bottom border-purple p-3">
+                <h6 class="mb-0 text-white fw-bold text-uppercase" style="font-size: 0.75rem;">Distribuição Geográfica Estimada</h6>
+            </div>
+            <div class="card-body p-0" style="min-height: 450px;">
+                <div id="map-container" class="w-100 h-100" style="border-radius: 0 0 12px 12px; overflow: hidden;"></div>
             </div>
         </div>
     </div>

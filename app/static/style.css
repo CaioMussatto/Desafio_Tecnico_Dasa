@@ -201,6 +201,29 @@ body {
     background: var(--light-purple) !important;
 }
 
+/* Barra de Seleção que segue o scroll */
+.sticky-selection-bar {
+    position: -webkit-sticky;
+    position: sticky;
+    top: 20px; 
+    z-index: 2000; /* Aumentado para garantir que fique sobre o mapa */
+    transition: all 0.3s ease;
+}
+
+/* Quando a barra gruda, o card dentro dela ganha um "salto" */
+.sticky-selection-bar .card {
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.8) !important; /* Sombra profunda */
+    border: 1px solid var(--light-purple) !important; /* Borda brilhante para destacar */
+}
+
+/* Ajuste para o Selectize não ficar espremido */
+.selectize-dropdown {
+    z-index: 2100 !important;
+    box-shadow: 0 10px 20px rgba(0,0,0,0.5) !important;
+    /* Garante que o menu tenha espaço para aparecer */
+    max-height: 300px !important; 
+}
+
 /* 7. Animações */
 .animate-fade-up {
     animation: fadeUp 0.4s ease-out forwards;
