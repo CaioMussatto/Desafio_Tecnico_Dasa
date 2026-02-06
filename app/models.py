@@ -16,8 +16,8 @@ class PopulationFrequency(BaseModel):
 
 class VariantData(BaseModel):
     """
-    Schema central para validação de dados de variantes genéticas.
-    Consolida informações de mapeamento GRCh38, genes, estatísticas populacionais e dados geográficos.
+    Modelo principal que consolida todos os dados de uma variante.
+    Atua como contrato de interface entre Backend e Frontend.
     """
     rsid: str = Field(..., description="Identificador único (Ex: rs699)")
     chromosome: str = Field(..., description="Cromossomo (Mapeamento GRCh38)")
@@ -29,7 +29,7 @@ class VariantData(BaseModel):
     genes: List[str] = Field(default_factory=list, description="Lista de símbolos oficiais de genes associados")
     consequence: str = Field(..., description="Consequência funcional predita mais severa")
     
-    # Suporte a múltiplos pontos no Mapa HD em caso de empate
+    # Suporte a múltiplos pontos no Mapa em caso de empate
     highest_maf_lat: List[float] = Field(default_factory=list, description="Lista de latitudes das populações com maior MAF")
     highest_maf_lon: List[float] = Field(default_factory=list, description="Lista de longitudes das populações com maior MAF")
     highest_maf_labels: List[str] = Field(default_factory=list, description="Nomes amigáveis das populações")

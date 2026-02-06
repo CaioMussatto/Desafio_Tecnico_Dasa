@@ -6,6 +6,5 @@ from app import create_app
 
 app = create_app()
 
-if __name__ == "__main__":
-    # Roda em 0.0.0.0 para aceitar conexões externas e modo debug para desenvolvimento
+if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5000, debug=True)

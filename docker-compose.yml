@@ -1,0 +1,51 @@
+# --------------------------------------------------------------------------
+# Projeto: Teste Técnico Dasa - Plataforma de Análise Genômica
+# Candidato: Caio Mussatto <caio.mussatto@gmail.com>
+# Descrição: Orquestração de container para o Dashboard Genômico
+# --------------------------------------------------------------------------
+
+services:
+  teste-dasa:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: caiomussatto/desafio_tecnico_dasa:latest
+    container_name: dasa-app
+    
+    labels:
+      maintainer: "Caio <caio.mussatto@gmail.com>"
+      project: "dasa-desafio"
+      version: "1.0.0"
+
+    environment:
+      # Garante que os logs do Python sejam enviados direto para o terminal sem buffer
+      - PYTHONUNBUFFERED=1
+      # Define o ponto de entrada da aplicação Flask
+      - FLASK_APP=app.main
+    
+    ports:
+      # Mapeamento: porta 5000 do host para porta 5000 do container
+      - "5000:5000"
+
+    volumes:
+      # Sincronização em tempo real do código fonte para facilitar desenvolvimento/debug
+      - ./app:/app/app
+
+    deploy:
+      resources:
+        limits:
+          # Restrição de hardware: Garante estabilidade do host Linux 
+          memory: 512M
+
+    # Associação do serviço à rede customizada para isolamento de camadas
+    networks:
+      - dasa_network
+
+networks:
+  # Configuração de rede isolada (Network Isolation)
+  dasa_network:
+    name: dasa_network
+    # Driver bridge: cria uma rede virtual privada dentro do host Linux
+    driver: bridge 
+    labels:
+      description: "Isolamento de rede para segurança e prevenção de conflitos de porta/IP"

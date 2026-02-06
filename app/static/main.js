@@ -1,6 +1,6 @@
 /**
  * Desafio Técnico - Analista de Bioinformática
- * Versão Final: Pintura de Regiões + Legenda Inteligente + Zoom Dinâmico
+ * 
  */
 
 let lastVariantData = null;
@@ -16,19 +16,23 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     input.addEventListener('input', () => {
-        const hasValue = input.value.length > 0;
-        
-        // Controla o botão de limpar (X)
-        clearBtn.style.display = hasValue ? 'flex' : 'none';
-        
-        // Lógica do Backspace: Se apagar tudo, mostra o histórico
-        if (!hasValue && historyCache.length > 0) {
-            renderHistory();
+    const hasValue = input.value.length > 0;
+    
+    // Controla o botão de limpar (X)
+    clearBtn.style.display = hasValue ? 'flex' : 'none';
+    
+    if (!hasValue) {
+        // Se o campo estiver vazio (Backspace total)
+        if (historyCache.length > 0) {
+            renderHistory(); 
         } else {
-            // Se começar a digitar, esconde o histórico para não atrapalhar
             dropdown.style.display = 'none';
         }
-    });
+    } else {
+        // Se o usuário começou a digitar algo novo, esconde o histórico
+        dropdown.style.display = 'none';
+    }
+});
 
     clearBtn.addEventListener('click', () => {
         input.value = '';
@@ -141,10 +145,9 @@ function renderMap(data, lats, lons, names, isSpecific, isRegionArray) {
         // Opacidade: 0.3 para regiões (permite ver o mapa embaixo) e 0.9 para pontos.
         const markerOpacity = isRegion ? 0.3 : 0.9;
         
-        // Cores: Roxo para seleções manuais/regiões, Amarelo/Laranja para Auto
-        let markerColor = "#ffc107"; // Padrão Global
-        if (isSpecific) markerColor = "#a366ff"; 
-        else if (i > 0) markerColor = "#fd7e14"; // Empates no global
+        let markerColor = "#ff6d00"; // Padrão Global
+        if (isSpecific) markerColor = "#240046"; 
+        else if (i > 0) markerColor = "#9d4edd"; // Empates no global
 
         return {
             type: "scattermap",
@@ -156,7 +159,6 @@ function renderMap(data, lats, lons, names, isSpecific, isRegionArray) {
                 size: markerSize, 
                 color: markerColor, 
                 opacity: markerOpacity,
-                // Removemos a borda para regiões para parecer uma "mancha" de calor
                 line: { width: isRegion ? 0 : 2, color: 'white' }
             },
             hoverinfo: "text",
@@ -184,7 +186,7 @@ function renderMap(data, lats, lons, names, isSpecific, isRegionArray) {
     Plotly.newPlot('map-container', traces, layout, { responsive: true, displayModeBar: false });
 }
 
-/** Tabela, Selectize e Exportação */
+// Tabela, Selectize e Exportação 
 function renderHorizontalTable(data) {
     const tbody = document.getElementById('table-body');
     const jsonViewer = document.getElementById('json-viewer');
@@ -275,6 +277,7 @@ function renderHorizontalTable(data) {
     updateView('GLOBAL');
 }
 
+// Função para Download
 function downloadFile(content, filename, contentType) {
     const blob = new Blob([content], { type: contentType });
     const a = document.createElement('a');
@@ -283,11 +286,13 @@ function downloadFile(content, filename, contentType) {
     a.click();
 }
 
+// Atualiza o cache
 function updateCache(rsid) {
     historyCache = [rsid, ...historyCache.filter(i => i !== rsid)].slice(0, 5);
     localStorage.setItem('genvar_recent_v2', JSON.stringify(historyCache));
 }
 
+// Função de barra de progresso
 function toggleProgress(show) {
     const wrapper = document.getElementById('progress-wrapper');
     const bar = document.getElementById('progress-bar');

@@ -1,5 +1,5 @@
 [project]
-name = "genvar-dasa"
+name = "desafio-tecnico-dasa"
 version = "0.1.0"
 description = "Plataforma de visualização de variantes genéticas com integração Ensembl"
 readme = "README.md"
@@ -7,12 +7,9 @@ requires-python = ">=3.11"
 dependencies = [
     "flask>=3.0.0",
     "flask-caching>=2.3.0",
+    "gunicorn>=25.0.1",
     "pydantic>=2.10.0",
     "python-dotenv>=1.0.0",
     "requests>=2.32.0",
-]
-
-[dependency-groups]
-dev = [
-    "pytest>=8.0.0",
+    "pytest>=8.0.0"
 ]

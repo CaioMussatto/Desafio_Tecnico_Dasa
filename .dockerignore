@@ -1,0 +1,21 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# Logs
+logs/
+*.log
+
+# Git e IDEs
+.git
+.gitignore
+.vscode/
+.idea/
+
+# UV
+.venv/
+venv/
+.uv/
+
+# teste
+.pytest_cache/

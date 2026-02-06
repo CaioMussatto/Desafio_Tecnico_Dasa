@@ -7,14 +7,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 load_dotenv(os.path.join(BASE_DIR, '.env'))
 
 class Config:
+    """
+    Classe de Configuração Centralizada.
+    Gerencia segredos, URLs externas e parâmetros de execução.
+    """
     # Segurança e Flask
     SECRET_KEY = os.environ.get('SECRET_KEY', 'genvar-bio-secret-2026')
     DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
     
-    # Integração Ensembl (Centralizado para o Core)
+    # Integração Ensembl 
     ENSEMBL_BASE_URL = "https://rest.ensembl.org"
     TIMEOUT = 15
     
+    # Templates de URL para endpoints externos
     ENDPOINTS = {
         "variation": "/variation/human/{rsid}?pops=1;phenotypes=1;alt_alleles=1",
         "overlap": "/overlap/region/human/{region}?feature=gene"
@@ -29,5 +34,5 @@ class Config:
         """Cria diretórios necessários na inicialização"""
         os.makedirs(cls.LOG_DIR, exist_ok=True)
 
-# Chamada automática para garantir que a pasta de logs exista
+# Chamada automática para garantir diretórios
 Config.init_app()

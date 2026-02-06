@@ -13,11 +13,9 @@ logs/
 # UV (Gerenciador de pacotes)
 .uv/
 
-# Docker
-
 # IDEs
 .vscode/
 .idea/
 
-# Arquivos temporários/testes
+# OS/Temporários
 .DS_Store
