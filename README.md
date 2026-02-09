@@ -24,6 +24,8 @@ Este projeto consiste em uma plataforma full-stack para consulta, visualização
 ### Infraestrutura e Nuvem
 
 * **Docker Multi-stage Build:** O Dockerfile foi estruturado em dois estágios. O primeiro realiza a compilação e instalação de dependências, enquanto o segundo (runtime) contém apenas o necessário para execução, resultando em uma imagem leve de 142MB.
+* **Base OS (Debian Slim):** Utilizamos a imagem oficial `python:3.13-slim`, baseada na distribuição Debian. Esta escolha garante um sistema operacional estável, com patches de segurança em dia e sem pacotes desnecessários, otimizando o tempo de deploy.
+* **Isolamento e Persistência:** Configuração de permissões restritas em diretórios específicos (como `/app/logs`), permitindo que a aplicação gere auditoria sem comprometer a integridade do restante do sistema
 * **Segurança de Container:** A aplicação não roda como root. Foi implementado um usuário de sistema dedicado (`appuser`) e permissões restritas em diretórios de logs.
 * **Serverless Deployment:** Hospedagem realizada no Google Cloud Run, garantindo escalabilidade automática e isolamento por container.
 
@@ -114,7 +116,7 @@ cd Desafio_Tecnico_Dasa
 Necessário ter o **Docker** instalado: [Download Docker](https://docs.docker.com/get-started/get-docker/)
 
 ```bash
-docker compose up --build
+docker compose up --build -d
 ```
 
 Acesse em `http://localhost:5000`.
@@ -173,6 +175,8 @@ Se você subiu a aplicação via **Docker** ou **Docker Compose**, o container e
 ```bash
 # Executa os testes
 docker exec -it dasa-app python -m pytest tests/
+# Limpeza do ambiente após os testes:
+docker rm -f dasa-app
 ```
 
 ### Testando em Ambiente Local (Python)

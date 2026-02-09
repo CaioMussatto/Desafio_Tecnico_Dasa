@@ -12,7 +12,7 @@ class Config:
     Gerencia segredos, URLs externas e parâmetros de execução.
     """
     # Segurança e Flask
-    SECRET_KEY = os.environ.get('SECRET_KEY', 'genvar-bio-secret-2026')
+    SECRET_KEY = os.environ.get('SECRET_KEY', 'dasa-app-secret-2026')
     DEBUG = os.environ.get('FLASK_DEBUG', 'True').lower() == 'true'
     
     # Integração Ensembl 
