@@ -3,7 +3,7 @@
 ![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=for-the-badge&logo=docker&logoColor=white)
 ![UV](https://img.shields.io/badge/UV-0.9.17-blue.svg?style=for-the-badge&logo=python&logoColor=white)
 ![GCP](https://img.shields.io/badge/Google_Cloud-4285F4?style=for-the-badge&logo=google-cloud&logoColor=white)
-![Ensembl](https://img.shields.io/badge/Ensembl_REST_API-orange?style=for-the-badge&logo=dna&logoColor=white)
+![Ensembl](https://img.shields.io/badge/Ensembl_REST_API-green?style=for-the-badge&logo=dna&logoColor=white)
 
 Este projeto consiste em uma plataforma full-stack para consulta, visualização e análise de variantes genéticas (rsIDs), consumindo dados da API REST Ensembl. A solução foca em performance, segurança e portabilidade, utilizando as tecnologias mais recentes do ecossistema Python.
 
@@ -76,7 +76,7 @@ O `EnsemblClient` (`app/core.py`) é o motor de inteligência da aplicação, re
 A aplicação realiza um processamento específico sobre as frequências populacionais para extrair métricas críticas:
 
 * **Cálculo de Global MAF (1000 Genomes):** Identifica o *Minor Allele Frequency* global utilizando especificamente os dados do 1000 Genomes Project Phase 3, isolando o segundo alelo mais frequente desta coorte.
-* **Detecção de Highest MAF (Cross-Project):** O sistema varre as frequências de grandes projetos genômicos como **gnomAD (v4.1 genomes/exomes)**, **NCBI ALFA**, **GEM-J**, **TOPMed**, **UK10K** e **Gambian Genome Variation Project**. O algoritmo identifica o maior valor de MAF entre todos esses bancos, gerenciando empates técnicos e armazenando múltiplos metadados geográficos para representação simultânea no mapa.
+* **Detecção de Highest MAF (Cross-Project):** O sistema varre as frequências de grandes projetos genômicos como **1000 Genomes Project Phase 3**, **gnomAD (v4.1 genomes/exomes)**, **NCBI ALFA**, **GEM-J**, **TOPMed**, **UK10K** e **Gambian Genome Variation Project**. O algoritmo identifica o maior valor de MAF entre todos esses bancos, pegando o segundo alelo mais frequente, gerenciando empates técnicos e armazenando múltiplos metadados geográficos para representação simultânea no mapa, porém, caso queira, o usuário pode filtrar para a população e encontrar o MAF da mesma
 * **Enriquecimento Geo-Espacial:** Cruza os códigos populacionais do Ensembl com o dicionário em `app/coordinates.py`, injetando coordenadas de latitude e longitude para plotagem dinâmica no Dashboard.
 
 ### 2. Estratégia de Resiliência e Integração de Endpoints
@@ -187,8 +187,8 @@ Se você optou pela execução via Python/UV:
 # Via UV (Recomendado)
 uv run python -m pytest
 
-# Via Pip/Pytest tradicional
-pytest tests/
+# Via Pip tradicional (Certifique-se de estar com o venv ativo)
+python -m pytest
 ```
 
 ## Autor
