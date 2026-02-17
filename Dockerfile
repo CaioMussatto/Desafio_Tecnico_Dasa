@@ -39,4 +39,4 @@ ENV FLASK_APP=app.main
 ENV PYTHONUNBUFFERED=1
 
 # Codigo que o container vai executar
-CMD ["gunicorn", "--bind", "0.0.0.0:5000", "app.main:app"]
+CMD ["gunicorn", "--bind", "0.0.0.0:5000", "--workers", "2", "--timeout", "120", "app.main:app"]
