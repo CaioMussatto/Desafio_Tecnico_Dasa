@@ -87,21 +87,47 @@ async function buscarVariante() {
     toggleProgress(true);
     try {
         const response = await fetch(`/api/variant/${rsid}`);
+        
+        // Verifica se o servidor retornou erro 
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => ({})); 
+            throw new Error(errorData.error || `Erro no servidor (Status: ${response.status})`);
+        }
+
         const data = await response.json();
-        if (!response.ok) throw new Error(data.error || 'rsID não encontrado');
+
+        // Se o backend retornou um objeto de erro formatado
+        if (data.error) {
+            throw new Error(data.error);
+        }
 
         lastVariantData = data;
         updateCache(data.rsid);
         renderHorizontalTable(data);
         renderIdeogram(data); 
+        
+        document.getElementById('status-area').innerHTML = '';
+
     } catch (err) {
+        console.error("Erro na busca:", err);
+        
+        let mensagemErro = err.message;
+        
+        if (err.message.includes("Unexpected token") || err.message.includes("503") || err.message.includes("504")) {
+            mensagemErro = "O serviço Ensembl está instável ou fora do ar. Tentamos a conexão, mas não houve resposta a tempo.";
+        } else if (err.message.includes("404")) {
+            mensagemErro = "Variante não encontrada ou erro na comunicação com o servidor Ensembl.";
+        }
+
         document.getElementById('status-area').innerHTML = `
-            <div class="alert alert-danger border-0 mt-3"><i class="bi bi-exclamation-triangle me-2"></i>${err.message}</div>`;
+            <div class="alert alert-warning border-0 mt-3">
+                <i class="bi bi-exclamation-triangle-fill me-2"></i>
+                <strong>Nota:</strong> ${mensagemErro}
+            </div>`;
     } finally {
         toggleProgress(false);
     }
 }
-
 /** Renderização do Ideogram */
 function renderIdeogram(data) {
     document.getElementById('ideogram-container').innerHTML = '';
